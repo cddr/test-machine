@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/clojure:tools-deps-1.10.1.727
+      - image: circleci/clojure:tools-deps-1.10.1.739
       - image: confluentinc/cp-zookeeper:5.3.1
         environment:
           ZOOKEEPER_CLIENT_PORT: 2181
