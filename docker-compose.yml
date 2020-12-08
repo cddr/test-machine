@@ -1,0 +1,69 @@
+version: '3'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.3.1
+    expose:
+      - "2181"
+    ports:
+      - "2181:2181"
+    environment:
+      KAFKA_OPTS: '-Xms256m -Xmx256m'
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  broker:
+    image: confluentinc/cp-kafka:5.3.1
+    depends_on:
+      - zookeeper
+    expose:
+      - "9092"
+    ports:
+      - "9092:9092"
+      - "19092:19092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:19092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_TOPIC_NUM_PARTITIONS: 1
+      KAFKA_OPTS: '-Xms256m -Xmx256m'
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_AUTO_OFFSET_RESET: "latest"
+      KAFKA_ENABLE_AUTO_COMMIT: "false"
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:5.3.1
+    depends_on:
+      - zookeeper
+      - broker
+    expose:
+      - "8081"
+    ports:
+      - "8081:8081"
+    environment:
+      KAFKA_OPTS: '-Xms256m -Xmx256m'
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper:2181'
+
+  kafka-rest:
+    image: confluentinc/cp-kafka-rest:5.3.1
+    depends_on:
+      - zookeeper
+      - broker
+    expose:
+      - "8082"
+    ports:
+      - "8082:8082"
+    environment:
+      KAFKA_OPTS: '-Xms256m -Xmx256m'
+      KAFKA_REST_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_REST_LISTENERS: http://0.0.0.0:8082
+      KAFKA_REST_SCHEMA_REGISTRY: http://localhost:8081
+      KAFKA_REST_HOST_NAME: localhost
