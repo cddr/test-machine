@@ -1,0 +1,22 @@
+{:paths ["src" "resources"]
+ :mvn/repos {"confluent" {:url "https://packages.confluent.io/maven/"}}
+ :deps {org.clojure/clojure {:mvn/version "1.10.1"}
+        fundingcircle/jackdaw {:mvn/version "0.7.6"}
+        org.apache.kafka/kafka_2.11 {:mvn/version "2.3.1"}
+        org.apache.kafka/kafka-streams-test-utils {:mvn/version "2.3.1"}
+        io.confluent/kafka-schema-registry-client {:mvn/version "5.3.1"}}
+ :aliases
+ {:test {:extra-paths ["test"]
+         :extra-deps {org.clojure/test.check {:mvn/version "1.0.0"}}}
+  :runner
+  {:extra-deps {com.cognitect/test-runner
+                {:git/url "https://github.com/cognitect-labs/test-runner"
+                 :sha "b6b3193fcc42659d7e46ecd1884a228993441182"}}
+   :main-opts ["-m" "cognitect.test-runner"
+               "-d" "test"]}
+  :jar {:extra-deps {seancorfield/depstar {:mvn/version "1.1.128"}}
+        :main-opts ["-m" "hf.depstar.jar" "test-machine.jar"]}
+  :install {:extra-deps {slipset/deps-deploy {:mvn/version "0.1.1"}}
+            :main-opts ["-m" "deps-deploy.deps-deploy" "install" "test-machine.jar"]}
+  :deploy {:extra-deps {slipset/deps-deploy {:mvn/version "0.1.1"}}
+           :main-opts ["-m" "deps-deploy.deps-deploy" "deploy" "test-machine.jar"]}}}
