@@ -45,7 +45,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v3-dependencies-
 
-      - run: clojure -P -M:runner -A:test
+      - run: clojure -P -M:runner
 
       - save_cache:
           paths:
@@ -53,4 +53,4 @@ jobs:
           key: v3-dependencies-{{ checksum "deps.edn" }}
 
       # run tests!
-      - run: clojure -A:test -M:runner
+      - run: clojure -M:runner

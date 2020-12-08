@@ -6,14 +6,12 @@
         org.apache.kafka/kafka-streams-test-utils {:mvn/version "2.3.1"}
         io.confluent/kafka-schema-registry-client {:mvn/version "5.3.1"}}
  :aliases
- {:test {:extra-paths ["test"]
-         :extra-deps {org.clojure/test.check {:mvn/version "1.0.0"}}}
-  :runner
-  {:extra-deps {com.cognitect/test-runner
-                {:git/url "https://github.com/cognitect-labs/test-runner"
-                 :sha "76568540e7f40268ad2b646110f237a60295fa3c"}}
-   :main-opts ["-m" "cognitect.test-runner"
-               "-d" "test"]}
+ {:runner {:extra-paths ["test"]
+           :extra-deps {org.clojure/test.check {:mvn/version "1.0.0"}
+                        com.cognitect/test-runner {:git/url "https://github.com/cognitect-labs/test-runner"
+                                                   :sha "76568540e7f40268ad2b646110f237a60295fa3c"}}
+           :main-opts ["-m" "cognitect.test-runner"
+                       "-d" "test"]}
   :jar {:extra-deps {seancorfield/depstar {:mvn/version "1.1.128"}}
         :main-opts ["-m" "hf.depstar.jar" "test-machine.jar"]}
   :install {:extra-deps {slipset/deps-deploy {:mvn/version "0.1.1"}}
