@@ -48,10 +48,10 @@ jobs:
       - run: clojure -P -M:test:runner
 
       - store_test_results:
-          path: test-results
+          path: ~/repo/test-results
 
       - store_artifacts:
-          path: ./logs
+          path: ~/repo/logs
 
       - save_cache:
           paths:
