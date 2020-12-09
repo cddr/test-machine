@@ -47,10 +47,16 @@ jobs:
 
       - run: clojure -P -M:test:runner
 
+      - store_test_results:
+          path: test-results
+
+      - store_artifacts:
+          path: ./logs
+
       - save_cache:
           paths:
             - ~/.m2
           key: v3-dependencies-{{ checksum "deps.edn" }}
 
       # run tests!
-      - run: clojure -M:test:runner
+      - run: clojure -M:test:runner --reporter kaocha.report/documentation
