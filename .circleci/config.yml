@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/clojure:tools-deps-1.10.1.727
+      - image: circleci/clojure:tools-deps-1.10.1.739
       - image: confluentinc/cp-zookeeper:5.3.1
         environment:
           ZOOKEEPER_CLIENT_PORT: 2181
@@ -41,16 +41,16 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v2-dependencies-{{ checksum "deps.edn" }}
+            - v3-dependencies-{{ checksum "deps.edn" }}
             # fallback to using the latest cache if no exact match is found
-            - v2-dependencies-
+            - v3-dependencies-
 
-      - run: clojure -P -M:test
+      - run: clojure -P -M:test:runner
 
       - save_cache:
           paths:
             - ~/.m2
-          key: v2-dependencies-{{ checksum "deps.edn" }}
+          key: v3-dependencies-{{ checksum "deps.edn" }}
 
       # run tests!
-      - run: clojure -A:test -M:runner
+      - run: clojure -M:test:runner

@@ -1,6 +1,7 @@
 /target
 /classes
 /checkouts
+/logs
 *.jar
 *.class
 /.cpcache
