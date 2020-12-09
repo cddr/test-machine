@@ -3,15 +3,22 @@
  :deps {org.clojure/clojure {:mvn/version "1.10.1"}
         fundingcircle/jackdaw {:mvn/version "0.7.6"}
         org.apache.kafka/kafka_2.11 {:mvn/version "2.3.1"}
-        org.apache.kafka/kafka-streams-test-utils {:mvn/version "2.3.1"}
-        io.confluent/kafka-schema-registry-client {:mvn/version "5.3.1"}}
+        org.apache.kafka/kafka-streams-test-utils {:mvn/version "2.3.1"}}
+
  :aliases
- {:runner {:extra-paths ["test"]
-           :extra-deps {org.clojure/test.check {:mvn/version "1.0.0"}
-                        com.cognitect/test-runner {:git/url "https://github.com/cognitect-labs/test-runner"
-                                                   :sha "76568540e7f40268ad2b646110f237a60295fa3c"}}
-           :main-opts ["-m" "cognitect.test-runner"
-                       "-d" "test"]}
+ {:test {:extra-paths ["test" "test/resources"]
+         :extra-deps {org.clojure/test.check {:mvn/version "1.0.0"}
+                      io.confluent/kafka-schema-registry-client {:mvn/version "5.3.1"}
+                      spootnik/unilog {:mvn/version "0.7.27"}
+                      ch.qos.logback/logback-classic {:mvn/version "1.2.3"}}}
+
+  :cider {:extra-deps {nrepl/nrepl {:mvn/version "0.8.2"}
+                       cider/cider-nrepl {:mvn/version "0.25.4"}}
+          :main-opts ["-m" "nrepl.cmdline"
+                      "--middleware" "[\"cider.nrepl/cider-middleware\"]"]}
+
+  :runner {:extra-deps {lambdaisland/kaocha {:mvn/version "1.0.732"}}
+           :main-opts ["-m" "kaocha.runner"]}
   :jar {:extra-deps {seancorfield/depstar {:mvn/version "1.1.128"}}
         :main-opts ["-m" "hf.depstar.jar" "test-machine.jar"]}
   :install {:extra-deps {slipset/deps-deploy {:mvn/version "0.1.1"}}
