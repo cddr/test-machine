@@ -47,12 +47,6 @@ jobs:
 
       - run: clojure -P -M:test:runner
 
-      - store_test_results:
-          path: ~/repo/test-results
-
-      - store_artifacts:
-          path: ~/repo/logs
-
       - save_cache:
           paths:
             - ~/.m2
@@ -60,3 +54,9 @@ jobs:
 
       # run tests!
       - run: clojure -M:test:runner --reporter kaocha.report/documentation
+
+      - store_test_results:
+          path: test-results
+
+      - store_artifacts:
+          path: logs
