@@ -17,14 +17,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v3-dependencies-{{ checksum "deps.edn" }}
+            - v4-dependencies-{{ checksum "deps.edn" }}
             # fallback to using the latest cache if no exact match is found
-            - v3-dependencies-
+            - v4-dependencies-
       - run: clojure -P -M:test:runner:jar:deploy
       - save_cache:
           paths:
             - ~/.m2
-          key: v3-dependencies-{{ checksum "deps.edn" }}
+          key: v4-dependencies-{{ checksum "deps.edn" }}
 
   test:
     docker:
@@ -63,17 +63,12 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v3-dependencies-{{ checksum "deps.edn" }}
+            - v4-dependencies-{{ checksum "deps.edn" }}
             # fallback to using the latest cache if no exact match is found
-            - v3-dependencies-
+            - v4-dependencies-
 
       # run tests!
       - run: clojure -M:test:runner --reporter kaocha.report/documentation
-
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: v3-dependencies-{{ checksum "deps.edn" }}
 
       - store_test_results:
           path: test-results
@@ -96,18 +91,13 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v3-dependencies-{{ checksum "deps.edn" }}
+            - v4-dependencies-{{ checksum "deps.edn" }}
             # fallback to using the latest cache if no exact match is found
-            - v3-dependencies-
+            - v4-dependencies-
 
       - run: clojure -Spom
       - run: clojure -M:jar
       - run: clojure -M:deploy
-
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: v3-dependencies-{{ checksum "deps.edn" }}
 
 workflows:
   version: 2
