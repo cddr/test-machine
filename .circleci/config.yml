@@ -70,6 +70,11 @@ jobs:
       # run tests!
       - run: clojure -M:test:runner --reporter kaocha.report/documentation
 
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v3-dependencies-{{ checksum "deps.edn" }}
+
       - store_test_results:
           path: test-results
 
@@ -98,6 +103,11 @@ jobs:
       - run: clojure -Spom
       - run: clojure -M:jar
       - run: clojure -M:deploy
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v3-dependencies-{{ checksum "deps.edn" }}
 
 workflows:
   version: 2
