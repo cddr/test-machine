@@ -115,3 +115,4 @@ workflows:
               only: /^v.*/
           requires:
             - test
+          context: clojars-deploy
