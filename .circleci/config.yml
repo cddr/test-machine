@@ -4,15 +4,12 @@
 #
 version: 2.1
 jobs:
-  build:
+  deps:
     docker:
       - image: circleci/clojure:tools-deps-1.10.1.739
-
     working_directory: ~/repo
-
     environment:
       JVM_OPTS: -Xmx3200m
-
     steps:
       - checkout
       - restore_cache:
@@ -59,60 +56,70 @@ jobs:
 
     steps:
       - checkout
-
-      # Download and cache dependencies
       - restore_cache:
           keys:
             - v4-dependencies-{{ checksum "deps.edn" }}
             # fallback to using the latest cache if no exact match is found
             - v4-dependencies-
-
-      # run tests!
       - run: clojure -M:test:runner --reporter kaocha.report/documentation
-
       - store_test_results:
           path: test-results
-
       - store_artifacts:
           path: logs
+
+  build:
+    docker:
+      - image: circleci/clojure:tools-deps-1.10.1.739
+    working_directory: ~/repo
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v4-dependencies-{{ checksum "deps.edn" }}
+            # fallback to using the latest cache if no exact match is found
+            - v4-dependencies-
+      - run: clojure -M:jar
+      - persist_to_workspace:
+          root: target
+          paths:
+            - test-machine.jar
 
   deploy:
     docker:
       - image: circleci/clojure:tools-deps-1.10.1.739
-
     working_directory: ~/repo
-
     environment:
       JVM_OPTS: -Xmx3200m
-
     steps:
       - checkout
-
-      # Download and cache dependencies
       - restore_cache:
           keys:
             - v4-dependencies-{{ checksum "deps.edn" }}
             # fallback to using the latest cache if no exact match is found
             - v4-dependencies-
-
-      - run: clojure -Spom
-      - run: clojure -M:jar
+      - attach_workspace:
+          at: /tmp/target
       - run: clojure -M:deploy
 
 workflows:
   version: 2
-  build_test_deploy:
+  test_and_build_jar:
     jobs:
-      - build
+      - deps
       - test:
           requires:
-            - build
+            - deps
+      - build:
+          requires:
+            - test
+  release_jar:
+    jobs:
       - deploy:
           filters:
             branches:
               only: /main/
             tags:
               only: /^v.*/
-          requires:
-            - test
           context: clojars-deploy
