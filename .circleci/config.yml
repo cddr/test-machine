@@ -95,7 +95,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v4-dependencies-
 
-      - run: clojure -X:depstar jar :sync-pom true :group-id cddr :artifact-id test-machine :version $CIRCLE_TAG :jar test-machine.jar
+      - run: clojure -X:depstar jar :sync-pom true :group-id cddr :artifact-id test-machine :version '"$CIRCLE_TAG"' :jar test-machine.jar
       - run: clojure -M:deploy
 
 workflows:
