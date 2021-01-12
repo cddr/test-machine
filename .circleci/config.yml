@@ -17,14 +17,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v4-dependencies-{{ checksum "deps.edn" }}
+            - v5-dependencies-{{ checksum "deps.edn" }}
             # fallback to using the latest cache if no exact match is found
-            - v4-dependencies-
+            - v5-dependencies-
       - run: clojure -P -M:test:runner:jar:deploy
       - save_cache:
           paths:
             - ~/.m2
-          key: v4-dependencies-{{ checksum "deps.edn" }}
+          key: v5-dependencies-{{ checksum "deps.edn" }}
 
   test:
     docker:
@@ -63,9 +63,9 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v4-dependencies-{{ checksum "deps.edn" }}
+            - v5-dependencies-{{ checksum "deps.edn" }}
             # fallback to using the latest cache if no exact match is found
-            - v4-dependencies-
+            - v5-dependencies-
 
       # run tests!
       - run: clojure -M:test:runner --reporter kaocha.report/documentation
@@ -91,12 +91,14 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v4-dependencies-{{ checksum "deps.edn" }}
+            - v5-dependencies-{{ checksum "deps.edn" }}
             # fallback to using the latest cache if no exact match is found
-            - v4-dependencies-
+            - v5-dependencies-
 
-      - run: clojure -X:depstar jar :sync-pom true :group-id cddr :artifact-id test-machine :version '"$CIRCLE_TAG"' :jar test-machine.jar
-      - run: clojure -M:deploy
+      - run:
+          command: |
+            bin/depstar-jar
+            bin/depstar-deploy
 
 workflows:
   version: 2

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [ -z $CIRCLE_TAG ];
+then
+	echo "No tag set. Using git describe to generate a version"
+	VERSION="$(git describe | sed -e 's/^v//')"
+else
+	echo "Tagged build. Tag=$CIRCLE_TAG"
+  VERSION="$CIRCLE_TAG"
+fi
+
+function quote () {
+	echo \""$1"\"
+}
+
+echo clojure -X:depstar jar \
+				:sync-pom true \
+				:group-id cddr \
+				:artifact-id test-machine \
+				:version $(quote $VERSION) \
+				:jar test-machine.jar
+clojure -X:depstar jar \
+				:sync-pom true \
+				:group-id cddr \
+				:artifact-id test-machine \
+				:version $(quote $VERSION) \
+				:jar test-machine.jar
