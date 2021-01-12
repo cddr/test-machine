@@ -2,6 +2,7 @@
 /classes
 /checkouts
 /logs
+pom.xml
 *.jar
 *.class
 /.cpcache
