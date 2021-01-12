@@ -20,8 +20,10 @@
   :runner {:extra-deps {lambdaisland/kaocha {:mvn/version "1.0.732"}
                         lambdaisland/kaocha-junit-xml {:mvn/version "0.0.76"}}
            :main-opts ["-m" "kaocha.runner"]}
-  :jar {:extra-deps {seancorfield/depstar {:mvn/version "2.0.165"}}
-        :main-opts ["-m" "hf.depstar.jar" "test-machine.jar"]}
+  :depstar {:replace-deps ; tool usage is new in 2.x
+            {seancorfield/depstar {:mvn/version "2.0.165"}}
+            :ns-default hf.depstar
+            :exec-args {}}
   :install {:extra-deps {slipset/deps-deploy {:mvn/version "0.1.1"}}
             :main-opts ["-m" "deps-deploy.deps-deploy" "install" "test-machine.jar"]}
   :deploy {:extra-deps {slipset/deps-deploy {:mvn/version "0.1.1"}}
