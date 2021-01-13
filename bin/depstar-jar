@@ -3,10 +3,10 @@
 if [ -z $CIRCLE_TAG ];
 then
 	echo "No tag set. Using git describe to generate a version"
-	VERSION="$(git describe | sed -e 's/^v//')"
+	VERSION="$(git describe)"
 else
 	echo "Tagged build. Tag=$CIRCLE_TAG"
-  VERSION="$(echo $CIRCLE_TAG | sed -e 's/^v//')"
+  VERSION="$CIRCLE_TAG"
 fi
 
 function quote () {
