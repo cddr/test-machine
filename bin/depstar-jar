@@ -6,7 +6,7 @@ then
 	VERSION="$(git describe | sed -e 's/^v//')"
 else
 	echo "Tagged build. Tag=$CIRCLE_TAG"
-  VERSION="$CIRCLE_TAG"
+  VERSION="$(echo $CIRCLE_TAG | sed -e 's/^v//')"
 fi
 
 function quote () {
