@@ -16,11 +16,6 @@ scenarios like...
      - a bunch of kafka-connect jobs,
 		 - streams defined in KSQL
 		 - a kafka streams application defined using plain old java
-		 
-In addition, the test-machine has not been available as part of jackdaw
-since April 2020 when the code for it was [moved](https://github.com/FundingCircle/jackdaw/pull/235)
-under the `test/` directory and consequently not available to folks that depend
-on it.
 
 I have not yet re-constituted the docs but the docs in jackdaw are
 still applicable for now. There is both a
